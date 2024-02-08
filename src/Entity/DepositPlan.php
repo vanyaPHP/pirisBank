@@ -20,7 +20,7 @@ class DepositPlan
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $dayPeriod = null;
+    private ?int $monthPeriod = null;
 
     #[ORM\Column]
     private ?float $percent = null;
@@ -64,14 +64,14 @@ class DepositPlan
         return $this;
     }
 
-    public function getDayPeriod(): ?int
+    public function getMonthPeriod(): ?int
     {
-        return $this->dayPeriod;
+        return $this->monthPeriod;
     }
 
-    public function setDayPeriod(int $dayPeriod): static
+    public function setMonthPeriod(int $monthPeriod): static
     {
-        $this->dayPeriod = $dayPeriod;
+        $this->monthPeriod = $monthPeriod;
 
         return $this;
     }
