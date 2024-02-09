@@ -23,7 +23,7 @@ class Deposit
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
     private ?string $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'deposits')]
