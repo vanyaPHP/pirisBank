@@ -68,7 +68,7 @@ class ClientController extends AbstractController
         if (!$this->isFioValid($data['firstName'],
             $data['middleName'], $data['lastName']))
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => 'Проверьте ФИО: неверный формат или уже существует',
                 'href' => "http://localhost:8000/clients/new",
                 'hrefText' => 'Попробовать ещё раз'
@@ -76,7 +76,7 @@ class ClientController extends AbstractController
         }
         if (!$this->isPassportValid($data))
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                'error' => 'Данные паспорта невалидны или такой пользователь уже есть',
                'href' => "http://localhost:8000/clients/new",
                'hrefText' => 'Попробовать ещё раз'

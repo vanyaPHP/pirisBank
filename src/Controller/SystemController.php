@@ -44,7 +44,7 @@ class SystemController extends AbstractController
 
         if ($newDate <= $oldDate)
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => 'Новая дата должны быть больше текущей',
                 'href' => 'http://localhost:8000/system',
                 'hrefText' => 'Вернуться на страницу системной информации'

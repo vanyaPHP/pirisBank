@@ -140,14 +140,14 @@ class DepositController extends AbstractController
                 == $this->deposit->getMainAccount()->getId())
             {
                 return [
-                    'sign' => '-',
+                    'sign' => '+',
                     'amount' => $transaction->getAmount(),
                     'datetime' => $transaction->getTransactionDay()->format('Y-m-d')
                 ];
             }
 
             return [
-                'sign' => '+',
+                'sign' => '-',
                 'amount' => $transaction->getAmount(),
                 'datetime' => $transaction->getTransactionDay()->format('Y-m-d')
             ];
@@ -180,7 +180,7 @@ class DepositController extends AbstractController
 
         if ($request->request->get('amount') < $depositPlan->getMinAmount())
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => 'Сумма должна быть минимум ' .
                     $depositPlan->getMinAmount() . ' бел. рублей',
                 'href' => 'http://localhost:8000/deposits/new',
@@ -207,7 +207,7 @@ class DepositController extends AbstractController
 
         if (is_string($result))
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => $result,
                 'href' => 'http://localhost:8000/deposits',
                 'hrefText' => 'Вернуться к списку депозитов'
@@ -225,7 +225,7 @@ class DepositController extends AbstractController
 
         if (is_string($result))
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => $result,
                 'href' => 'http://localhost:8000/deposits',
                 'hrefText' => 'Вернуться к списку депозитов'

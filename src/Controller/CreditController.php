@@ -86,7 +86,7 @@ class CreditController extends AbstractController
 
         if ($request['amount'] < $creditPlan->getMinAmount())
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => 'Сумма должна быть минимум ' .
                     $creditPlan->getMinAmount() . ' бел. рублей',
                 'href' => 'http://localhost:8000/credits/new',
@@ -213,7 +213,7 @@ class CreditController extends AbstractController
 
         if (is_string($result))
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => $result,
                 'href' => 'http://localhost:8000/credits',
                 'hrefText' => 'Вернуться к списку кредитов'
@@ -231,7 +231,7 @@ class CreditController extends AbstractController
 
         if (is_string($result))
         {
-            return $this->render('error.html.twig', [
+            return $this->render('notification.html.twig', [
                 'error' => $result,
                 'href' => 'http://localhost:8000/credits',
                 'hrefText' => 'Вернуться к списку кредитов'
