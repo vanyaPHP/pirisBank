@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Domain\Service\Deposit\DepositService;
 use App\Entity\SystemInformation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,19 +20,44 @@ class SystemController extends AbstractController
     #[Route('/system', name: 'system_index')]
     public function index(): Response
     {
-        return $this->render('system_index.html.twig');
+        $systemInformation = $this->entityManager->getRepository(SystemInformation::class)
+            ->findBy([], ['id' => 'DESC'])[0];
+
+        return $this->render('system_index.html.twig', [
+            'systemDateTime' => $systemInformation->getCurrentDate()->format('Y F j e'),
+            'systemDateTimeVar' => $systemInformation->getCurrentDate()->format('Y-m-d')
+        ]);
     }
 
     #[Route('/system/update-datetime', name: 'system_update_datetime', methods: 'POST')]
-    public function setSystemDatetime(Request $request): RedirectResponse
+    public function setSystemDatetime(Request $request): Response|RedirectResponse
     {
-        $systemDateTime = $request->request->get('systemDateTime');
         $systemInformation = $this->entityManager->getRepository(SystemInformation::class)
             ->findBy([], ['id' => 'DESC'])[0];
-        $systemInformation->setCurrentDate((new \DateTime())
-            ->setTimestamp(strtotime($systemDateTime)));
+        $systemDateTime = $request->request->get('systemDateTime');
+        $depositService = new DepositService($this->entityManager);
 
-        $this->entityManager->flush();
+        $newDate = (new \DateTime())->setTimestamp(strtotime($systemDateTime));
+        $oldDate = $systemInformation->getCurrentDate();
+
+        if ($newDate <= $oldDate)
+        {
+            return $this->render('error.html.twig', [
+                'error' => 'Новая дата должны быть больше текущей',
+                'href' => 'http://localhost:8000/system',
+                'hrefText' => 'Вернуться на страницу системной информации'
+            ]);
+        }
+
+        $daysPassed = date_diff($newDate, $oldDate)->days;
+        for ($i = 0;$i < $daysPassed;$i++)
+        {
+            $depositService->closeBankDay();
+            $systemInformation->setCurrentDate(((new \DateTime())
+                ->setTimestamp(strtotime($systemInformation->getCurrentDate()->format('Y-m-d'))))
+                ->modify("+1 day"));
+            $this->entityManager->flush();
+        }
 
         return $this->redirect('http://localhost:8000/');
     }

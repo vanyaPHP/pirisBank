@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SystemInformationRepository::class)]
+#[ORM\Table(name: 'system_info')]
 class SystemInformation
 {
     #[ORM\Id]
@@ -14,7 +15,7 @@ class SystemInformation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'system_datetime_info', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $currentDate = null;
 
     public function getId(): ?int

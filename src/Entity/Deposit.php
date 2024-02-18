@@ -23,7 +23,7 @@ class Deposit
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 5)]
     private ?string $amount = null;
 
     #[ORM\ManyToOne(inversedBy: 'deposits')]
@@ -34,11 +34,11 @@ class Deposit
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
-    #[ORM\ManyToOne(inversedBy: 'mainAccountDeposits')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'mainAccountDeposits')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Account $mainAccount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'percentAccountDeposits')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'percentAccountDeposits')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Account $percentAccount = null;
 

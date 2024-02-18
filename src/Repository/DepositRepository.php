@@ -21,6 +21,17 @@ class DepositRepository extends ServiceEntityRepository
         parent::__construct($registry, Deposit::class);
     }
 
+    public function findActiveDeposits(\DateTime $currentDate)
+    {
+        return $this->createQueryBuilder('deposit')
+            ->andWhere(':current_date BETWEEN 
+            deposit.startDate AND deposit.endDate')
+            ->andWhere('deposit.amount > 0')
+            ->setParameter('current_date', $currentDate->format('Y-m-d'))
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Deposit[] Returns an array of Deposit objects
 //     */

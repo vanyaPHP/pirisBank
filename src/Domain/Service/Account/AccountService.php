@@ -61,4 +61,21 @@ class AccountService implements AccountServiceInterface
 
         return $mask . $accountNumber;
     }
+
+    public function getCashDeskAccount(): Account
+    {
+        return $this->entityManager->getRepository(Account::class)
+            ->findOneBy(
+                ['accountPlan' => $this->entityManager->getRepository(AccountPlan::class)
+                ->findOneBy(['accountNumber' => '1010'])]
+            );
+    }
+
+    public function getDevelopmentFundAccount(): Account
+    {
+        return $this->entityManager->getRepository(Account::class)
+            ->findOneBy(
+                ['accountPlan' => $this->entityManager->getRepository(AccountPlan::class)
+                ->findOneBy(['accountNumber' => '7327'])]);
+    }
 }

@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body>
+        {{ include('navbar.html.twig') }}
+
+        <h2 style="margin-top: 50px;text-align: center">Детали</h2>
+
+        <table style="margin-top: 50px" class="table table-bordered table-hover table-primary">
+            <tr>
+                <th>Дебит основного счёта</th>
+                <th>Кредит основного счёта</th>
+                <th>Баланс на основном счёте</th>
+                <th>Дебит процентного счёта</th>
+                <th>Кредит процентного счёта</th>
+                <th>Баланс на процентном счёте</th>
+                <th>Транзакции на основном счёте</th>
+                <th>Транзакции на процентном счёте</th>
+            </tr>
+            <tr>
+                <td>{{ deposit.mainAccountDebit }}</td>
+                <td>{{ deposit.mainAccountCredit }}</td>
+                <td>{{ deposit.mainAccountSum }}</td>
+                <td>{{ deposit.percentAccountDebit }}</td>
+                <td>{{ deposit.percentAccountCredit }}</td>
+                <td>{{ deposit.percentAccountSum }}</td>
+                <td>
+                    {% for transaction in deposit.mainAccountTransactions %}
+                        {{ transaction.sign }}{{ transaction.amount }} бел. руб. ({{ transaction.datetime }}) <br><br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for transaction in deposit.percentAccountTransactions %}
+                        {{ transaction.sign }}{{ transaction.amount }} бел. руб. ({{ transaction.datetime }}) <br><br>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

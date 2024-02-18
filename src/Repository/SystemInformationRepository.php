@@ -22,7 +22,7 @@ class SystemInformationRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return SystemInformation[] Returns an array of SystemInformation objects
+//     * @return SystemInformationService[] Returns an array of SystemInformationService objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class SystemInformationRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?SystemInformation
+//    public function findOneBySomeField($value): ?SystemInformationService
 //    {
 //        return $this->createQueryBuilder('s')
 //            ->andWhere('s.exampleField = :val')

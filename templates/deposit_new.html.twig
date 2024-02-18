@@ -25,7 +25,8 @@
                 {% for depositPlan in depositPlans %}
                     <option value="{{ depositPlan.id }}">
                         {{ depositPlan.name }}  ({{ depositPlan.monthPeriod }} месяца
-                        под {{ depositPlan.percent }} процента)
+                        под {{ depositPlan.percent }} процента,
+                        минимальная сумма {{ depositPlan.minAmount}} бел. рублей)
                     </option>
                 {% endfor %}
             </select>

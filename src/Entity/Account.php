@@ -19,13 +19,13 @@ class Account
     #[ORM\Column(length: 13)]
     private ?string $accountNumber = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 5)]
     private ?string $debitValue = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 5)]
     private ?string $creditValue = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 5)]
     private ?string $balance = null;
 
     #[ORM\ManyToOne(inversedBy: 'accounts')]

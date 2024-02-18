@@ -88,7 +88,7 @@ class DepositPlan
         return $this;
     }
 
-    public function isIsRevocable(): ?bool
+    public function getIsRevocable(): ?bool
     {
         return $this->isRevocable;
     }

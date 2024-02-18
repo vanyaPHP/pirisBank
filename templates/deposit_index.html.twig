@@ -15,5 +15,45 @@
                 </svg>
             </button>
         </div>
+
+        {% if deposits|length == 0 %}
+            <h2 style="text-align: center;margin-top: 50px">
+                Пока что депозитов нет в базе
+            </h2>
+        {% else %}
+            <table style="margin-top: 50px" class="table table-hover table-bordered table-primary">
+                <tr>
+                    <th>№</th>
+                    <th>Сумма взноса</th>
+                    <th>Клиент</th>
+                    <th>Дата начала</th>
+                    <th>Дата окончания</th>
+                    <th>Действия</th>
+                </tr>
+                {% for deposit in deposits %}
+                    <tr>
+                        <td>{{ deposit.number }}</td>
+                        <td>{{ deposit.amount }}</td>
+                        <td>{{ deposit.client }}</td>
+                        <td>{{ deposit.startDate }}</td>
+                        <td>{{ deposit.endDate }}</td>
+                        <td>
+                            <form method="POST" action="http://localhost:8000/deposits/details">
+                                <input type="hidden" name="depositId" value="{{ deposit.depositId }}">
+                                <input type="submit" class="btn btn-warning" value="Детали">
+                            </form>
+                            <form method="POST" action="http://localhost:8000/deposits/take-percents">
+                                <input type="hidden" name="depositId" value="{{ deposit.depositId }}">
+                                <input type="submit" class="btn btn-danger" value="Взять проценты">
+                            </form>
+                            <form method="POST" action="http://localhost:8000/deposits/close">
+                                <input type="hidden" name="depositId" value="{{ deposit.depositId }}">
+                                <input type="submit" class="btn btn-danger" value="Закрыть депозит">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
     </body>
 </html>
