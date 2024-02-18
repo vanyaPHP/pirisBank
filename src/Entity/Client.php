@@ -89,9 +89,13 @@ class Client
     #[ORM\OneToMany(targetEntity: Deposit::class, mappedBy: 'client')]
     private Collection $deposits;
 
+    #[ORM\OneToMany(targetEntity: Credit::class, mappedBy: 'client')]
+    private Collection $credits;
+
     public function __construct()
     {
         $this->deposits = new ArrayCollection();
+        $this->credits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -387,6 +391,36 @@ class Client
             // set the owning side to null (unless already changed)
             if ($deposit->getClient() === $this) {
                 $deposit->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Credit>
+     */
+    public function getCredits(): Collection
+    {
+        return $this->credits;
+    }
+
+    public function addCredit(Credit $credit): static
+    {
+        if (!$this->credits->contains($credit)) {
+            $this->credits->add($credit);
+            $credit->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCredit(Credit $credit): static
+    {
+        if ($this->credits->removeElement($credit)) {
+            // set the owning side to null (unless already changed)
+            if ($credit->getClient() === $this) {
+                $credit->setClient(null);
             }
         }
 

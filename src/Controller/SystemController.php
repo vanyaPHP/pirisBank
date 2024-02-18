@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Domain\Service\Credit\CreditService;
 use App\Domain\Service\Deposit\DepositService;
 use App\Entity\SystemInformation;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,6 +37,7 @@ class SystemController extends AbstractController
             ->findBy([], ['id' => 'DESC'])[0];
         $systemDateTime = $request->request->get('systemDateTime');
         $depositService = new DepositService($this->entityManager);
+        $creditService = new CreditService($this->entityManager);
 
         $newDate = (new \DateTime())->setTimestamp(strtotime($systemDateTime));
         $oldDate = $systemInformation->getCurrentDate();
@@ -53,6 +55,7 @@ class SystemController extends AbstractController
         for ($i = 0;$i < $daysPassed;$i++)
         {
             $depositService->closeBankDay();
+            $creditService->closeBankDay();
             $systemInformation->setCurrentDate(((new \DateTime())
                 ->setTimestamp(strtotime($systemInformation->getCurrentDate()->format('Y-m-d'))))
                 ->modify("+1 day"));

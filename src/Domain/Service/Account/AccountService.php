@@ -4,6 +4,7 @@ namespace App\Domain\Service\Account;
 
 use App\Entity\Account;
 use App\Entity\AccountPlan;
+use App\Entity\Credit;
 use App\Entity\Deposit;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -28,6 +29,31 @@ class AccountService implements AccountServiceInterface
         $percentAccount->setDebitValue(0);
         $percentAccount->setCreditValue(0);
         $percentAccount->setAccountNumber($this->generateAccountNumber('P'));
+
+        $this->entityManager->persist($mainAccount);
+        $this->entityManager->persist($percentAccount);
+
+        return [
+            0 => $mainAccount,
+            1 => $percentAccount
+        ];
+    }
+
+    public function createAccountsForCredit(Credit $credit): array
+    {
+        $mainAccount = new Account();
+        $mainAccount->setAccountPlan($credit->getCreditPlan()->getMainAccountPlan());
+        $mainAccount->setBalance(0);
+        $mainAccount->setCreditValue(0);
+        $mainAccount->setDebitValue(0);
+        $mainAccount->setAccountNumber($this->generateAccountNumber('CM'));
+
+        $percentAccount = new Account();
+        $percentAccount->setAccountPlan($credit->getCreditPlan()->getPercentAccountPlan());
+        $percentAccount->setBalance(0);
+        $percentAccount->setDebitValue(0);
+        $percentAccount->setCreditValue(0);
+        $percentAccount->setAccountNumber($this->generateAccountNumber('CP'));
 
         $this->entityManager->persist($mainAccount);
         $this->entityManager->persist($percentAccount);

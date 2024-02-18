@@ -44,12 +44,24 @@ class Account
     #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'creditAccount')]
     private Collection $creditTransactions;
 
+    #[ORM\OneToMany(targetEntity: CreditPlan::class, mappedBy: 'mainAccount')]
+    private Collection $creditPlans;
+
+    #[ORM\OneToMany(targetEntity: Credit::class, mappedBy: 'mainAccount')]
+    private Collection $mainAccountCredits;
+
+    #[ORM\OneToMany(targetEntity: Credit::class, mappedBy: 'percentAccount')]
+    private Collection $percentAccountCredits;
+
     public function __construct()
     {
         $this->mainAccountDeposits = new ArrayCollection();
         $this->percentAccountDeposits = new ArrayCollection();
         $this->debitTransactions = new ArrayCollection();
         $this->creditTransactions = new ArrayCollection();
+        $this->creditPlans = new ArrayCollection();
+        $this->mainAccountCredits = new ArrayCollection();
+        $this->percentAccountCredits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -231,6 +243,96 @@ class Account
             // set the owning side to null (unless already changed)
             if ($creditTransaction->getCreditAccount() === $this) {
                 $creditTransaction->setCreditAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CreditPlan>
+     */
+    public function getCreditPlans(): Collection
+    {
+        return $this->creditPlans;
+    }
+
+    public function addCreditPlan(CreditPlan $creditPlan): static
+    {
+        if (!$this->creditPlans->contains($creditPlan)) {
+            $this->creditPlans->add($creditPlan);
+            $creditPlan->setMainAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreditPlan(CreditPlan $creditPlan): static
+    {
+        if ($this->creditPlans->removeElement($creditPlan)) {
+            // set the owning side to null (unless already changed)
+            if ($creditPlan->getMainAccount() === $this) {
+                $creditPlan->setMainAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Credit>
+     */
+    public function getMainAccountCredits(): Collection
+    {
+        return $this->mainAccountCredits;
+    }
+
+    public function addMainAccountCredit(Credit $mainAccountCredit): static
+    {
+        if (!$this->mainAccountCredits->contains($mainAccountCredit)) {
+            $this->mainAccountCredits->add($mainAccountCredit);
+            $mainAccountCredit->setMainAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMainAccountCredit(Credit $mainAccountCredit): static
+    {
+        if ($this->mainAccountCredits->removeElement($mainAccountCredit)) {
+            // set the owning side to null (unless already changed)
+            if ($mainAccountCredit->getMainAccount() === $this) {
+                $mainAccountCredit->setMainAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Credit>
+     */
+    public function getPercentAccountCredits(): Collection
+    {
+        return $this->percentAccountCredits;
+    }
+
+    public function addPercentAccountCredit(Credit $percentAccountCredit): static
+    {
+        if (!$this->percentAccountCredits->contains($percentAccountCredit)) {
+            $this->percentAccountCredits->add($percentAccountCredit);
+            $percentAccountCredit->setPercentAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removePercentAccountCredit(Credit $percentAccountCredit): static
+    {
+        if ($this->percentAccountCredits->removeElement($percentAccountCredit)) {
+            // set the owning side to null (unless already changed)
+            if ($percentAccountCredit->getPercentAccount() === $this) {
+                $percentAccountCredit->setPercentAccount(null);
             }
         }
 

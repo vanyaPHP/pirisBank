@@ -33,11 +33,19 @@ class AccountPlan
     #[ORM\OneToMany(targetEntity: Account::class, mappedBy: 'accountPlan')]
     private Collection $accounts;
 
+    #[ORM\OneToMany(targetEntity: CreditPlan::class, mappedBy: 'mainAccountPlan')]
+    private Collection $mainCreditPlans;
+
+    #[ORM\OneToMany(targetEntity: CreditPlan::class, mappedBy: 'percentAccountPlan')]
+    private Collection $percentCreditPlans;
+
     public function __construct()
     {
         $this->mainAccountPlanDeposits = new ArrayCollection();
         $this->percentAccountPlanDeposits = new ArrayCollection();
         $this->accounts = new ArrayCollection();
+        $this->mainCreditPlans = new ArrayCollection();
+        $this->percentCreditPlans = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,6 +173,66 @@ class AccountPlan
             // set the owning side to null (unless already changed)
             if ($account->getAccountPlan() === $this) {
                 $account->setAccountPlan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CreditPlan>
+     */
+    public function getMainCreditPlans(): Collection
+    {
+        return $this->mainCreditPlans;
+    }
+
+    public function addMainCreditPlan(CreditPlan $mainCreditPlan): static
+    {
+        if (!$this->mainCreditPlans->contains($mainCreditPlan)) {
+            $this->mainCreditPlans->add($mainCreditPlan);
+            $mainCreditPlan->setMainAccountPlan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMainCreditPlan(CreditPlan $mainCreditPlan): static
+    {
+        if ($this->mainCreditPlans->removeElement($mainCreditPlan)) {
+            // set the owning side to null (unless already changed)
+            if ($mainCreditPlan->getMainAccountPlan() === $this) {
+                $mainCreditPlan->setMainAccountPlan(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CreditPlan>
+     */
+    public function getPercentCreditPlans(): Collection
+    {
+        return $this->percentCreditPlans;
+    }
+
+    public function addPercentCreditPlan(CreditPlan $percentCreditPlan): static
+    {
+        if (!$this->percentCreditPlans->contains($percentCreditPlan)) {
+            $this->percentCreditPlans->add($percentCreditPlan);
+            $percentCreditPlan->setPercentAccountPlan($this);
+        }
+
+        return $this;
+    }
+
+    public function removePercentCreditPlan(CreditPlan $percentCreditPlan): static
+    {
+        if ($this->percentCreditPlans->removeElement($percentCreditPlan)) {
+            // set the owning side to null (unless already changed)
+            if ($percentCreditPlan->getPercentAccountPlan() === $this) {
+                $percentCreditPlan->setPercentAccountPlan(null);
             }
         }
 

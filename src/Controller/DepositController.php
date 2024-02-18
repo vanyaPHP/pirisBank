@@ -75,7 +75,7 @@ class DepositController extends AbstractController
     }
 
     #[Route('/deposits/details', name: 'deposit_details', methods: 'POST')]
-    public function details(Request $request)
+    public function details(Request $request): Response
     {
         $deposit = $this->entityManager->getRepository(Deposit::class)
             ->findOneBy(['id' => $request->request->get('depositId')]);
