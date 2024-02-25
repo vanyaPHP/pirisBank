@@ -139,10 +139,18 @@ class ClientController extends AbstractController
     }
 
     #[Route('/clients/delete', name: 'client_delete', methods: 'POST')]
-    public function delete(Request $request): RedirectResponse
+    public function delete(Request $request): RedirectResponse|Response
     {
         $clientId = $request->request->get('clientId');
         $client = $this->entityManager->getRepository(Client::class)->find($clientId);
+        if ($client->getCredits()->count() > 0 || $client->getDeposits()->count() > 0)
+        {
+            return $this->render('notification.html.twig', [
+                'error' => 'Нельзя удалить пользователя с открытыми депозитными или кредитными счетами',
+                'href' => "http://localhost:8000/clients",
+                'hrefText' => 'Вернуться на страницу клиентов'
+            ]);
+        }
         $this->entityManager->remove($client);
         $this->entityManager->flush();
 
